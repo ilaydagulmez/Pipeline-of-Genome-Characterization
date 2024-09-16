@@ -129,7 +129,7 @@ Use doubletrouble R package (Almeida-Silva and Van de Peer 2024) and protein seq
 For the R package tool you can follow the steps here: https://www.bioconductor.org/packages/release/bioc/vignettes/doubletrouble/inst/doc/doubletrouble_vignette.html
 
 
-# Step 9: Chloroplast Genome Characterization
+# Step 9: Chloroplast Genome Characterization (optional)
 
 Use GetOrganelle (Jin et al, 2020) to assembly of raw reads:
 

@@ -1,4 +1,4 @@
-# Our current pipeline to genome characterization of polyploid plants
+# Our current pipeline of genome characterization of polyploid plants
 
 # Step 1: Quality Check
 

@@ -28,13 +28,13 @@ SOAPdenovo-fusion -D -s config.txt -p 64 -K 21 (or identify) -g k21_1 -c ./megah
 SOAPdenovo-127mer map -s config.txt -p 64 -g k21_1
 SOAPdenovo-127mer scaff -p 64 -g k21_1 -F
 
-## output file = k21_1.scafSeq ##
+##output file = k21_1.scafSeq##
 
 After assembly step use Redundans to eliminate redundancy and potentially generate additional scaffolding:
 
 redundans.py -v -i karect_FASTP_1.fastq karect_FASTP_2.fastq -f k21_1.scafSeq  --nogapclosing -o redundans
 
-## output file = scaffolds.reduced.fa ##
+##output file = scaffolds.reduced.fa##
 
 # 3 times polishing
 
@@ -70,6 +70,8 @@ minimap2 -ax sr polished2.fa final.racon.fastq > 3_racon_aln.sam
 racon -m 8 -x -6 -g -8 -w 500 -t 64 final.racon.fastq 3_racon_aln.sam polished2 > polished3.fasta
 
 After get the polished3.fa file, assembly step finished.
+
+
 
 
 

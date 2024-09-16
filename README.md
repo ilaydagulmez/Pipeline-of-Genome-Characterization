@@ -114,8 +114,11 @@ getAnnoFasta.pl ragtag_polished3.gff
 Use wgd v2 (Chen et al, 2024) and CDS file which obtained from AUGUSTUS to identify Ks value. If you want to change your steps you can follow the wgd v2 github file.
 
 wgd dmd ragtag_polished3.codingseq -o dmd
+
 wgd ksd ragtag_polished3.codingseq.tsv ragtag_polished3.codingseq -o ksd
+
 wgd syn -f transcript -a ID ragtag_polished3.codingseq.tsv ragtag_polished3.gff -ks ragtag_polished3.codingseq.tsv.ks.tsv --pathiadhore ./i-adhore -o syn
+
 wgd peak --heuristic ragtag_polished3.codingseq.tsv.ks.tsv -ap ./syn/iadhore-out/anchorpoints.txt -sm ./syn/iadhore-out/segments.txt -le ./syn/iadhore-out/list_elements.txt -mp ./syn/iadhore-out/multiplicon_pairs.txt -n 1 4 -kc 3 -o wgd_peak
 
 

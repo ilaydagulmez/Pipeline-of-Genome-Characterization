@@ -24,28 +24,6 @@ Then use MEGAHIT and SOAPdenovo2 to de novo assembly. If you don't want to use o
 
 megahit --no-mercy -1 karect_FASTP_1.fastq -2 karect_FASTP_2.fastq
 
-Prepare config.txt like this:
-
-#maximal read length
-max_rd_len=151
-[LIB]
-#average insert size
-avg_ins=500
-#if sequence needs to be reversed
-reverse_seq=0
-asm_flags=2
-#in which order the reads are used while scaffolding
-rank=1
-#cutoff of pair number for a reliable connection (at least 3 for short insert size)
-pair_num_cutoff=3
-#minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)
-map_len=32
-#a pair of fastq files, read1 file should be followed by read2 file
-q1=karect_FASTP_1.fastq
-q2=karect_FASTP_2.fastq
-
-Then use this .txt here:
-
 SOAPdenovo-fusion -D -s config.txt -p 64 -K 21 (or identify) -g k21_1 -c ./megahit_out/final.contigs.fa
 SOAPdenovo-127mer map -s config.txt -p 64 -g k21_1
 SOAPdenovo-127mer scaff -p 64 -g k21_1 -F

@@ -6,7 +6,7 @@ Use FastQC to quality check. If filter needed pass to step 2.
 
 # Step 2: Filtering and Correction
 
-Use SOAPnuke (or fastp) to filtering anf fastp to correction.
+Use SOAPnuke (or fastp) to filtering and fastp to correction.
 
 SOAPnuke filter -n 0.01 -l 35 -q 0.1 -1 1.fastq.gz -C clean_1.fastq.gz -2 2.fastq.gz -D clean_2.fastq.gz --polyX 65 --minReadLen 65
 

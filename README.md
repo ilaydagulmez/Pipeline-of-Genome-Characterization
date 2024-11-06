@@ -134,6 +134,14 @@ wgd syn -f transcript -a ID ragtag_polished3.codingseq.tsv ragtag_polished3.gff 
 
 wgd peak --heuristic ragtag_polished3.codingseq.tsv.ks.tsv -ap ./syn/iadhore-out/anchorpoints.txt -sm ./syn/iadhore-out/segments.txt -le ./syn/iadhore-out/list_elements.txt -mp ./syn/iadhore-out/multiplicon_pairs.txt -n 1 4 -kc 3 -o wgd_peak
 
+(Add outgroups CDS file for this step)
+
+wgd dmd -f ragtag_polished3.codingseq -ap wgd_peak/AnchorKs_FindPeak/ragtag_polished3.codingseq.tsv.ks.tsv_95%CI_AP_for_dating_weighted_format.tsv -o wgd_dmd_ortho *add_all_outgroups_cds_file_here_respectively*
+
+wgd focus --protcocdating --aamodel lg wgd_dmd_ortho/merge_focus_ap.tsv -sp dating_tree.nw -o wgd_dating -d mcmctree -ds 'burnin = 2000' -ds 'sampfreq = 1000' -ds 'nsample = 20000'  *add_all_outgroups_cds_file_here_respectively* ragtag_polished3.codingseq
+
+NOTE: You should prepare dating_tree.nw file manually. For details, you can follow wgd v2 github file again.
+
 
 # Step 9: Analysis of Duplicated Gene Pairs
 

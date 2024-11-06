@@ -13,8 +13,21 @@ SOAPnuke filter -n 0.01 -l 35 -q 0.1 -1 1.fastq.gz -C clean_1.fastq.gz -2 2.fast
 
 fastp --in1 clean_1.fastq --out1 FASTP_1.fastq.gz --in2 clean_2.fastq --out2 FASTP_2.fastq.gz --correction
 
+# Step 3: Finding Optimum k-mer and Genome Heterozygosity
 
-# Step 3: De novo Assembly 
+Use Kmergenie (Chikhi and Medvedev, 2013) for identify optimum k-mer value. After getting optimum k-mer, use this for Jellyfish (Marcais and Kingsford, 2011) as input.
+
+cat FASTP_1.fastq.gz FASTP_2.fastq.gz > FASTP_1_2.fastq.gz
+
+gunzip FASTP_1_2.fastq.gz
+
+jellyfish count -C -m optimum k-mer -s 1000000000 -t 10 FASTP_1_2.fastq -o reads.jf
+jellyfish histo -t 10 reads.jf > reads.histo
+
+Now, reads.histo is also input for GenomeScope2.0 (http://genomescope.org/genomescope2.0/) Load this this file and get the genome heterozygosity results.
+
+
+# Step 4: De novo Assembly 
 
 Use Karect (Allam et al, 2015) before assembly step the second error correction
 
@@ -77,7 +90,7 @@ ragtag.py scaffold reference.fasta polished3.fasta
 ##output file = ragtag.scaffold.fasta
 
 
-# Step 4: Assessment of Assemblies
+# Step 5: Assessment of Assemblies
 
 Use BUSCO (Simão et al. 2015) to assessment of assembly and quality:
 
@@ -88,7 +101,7 @@ To plot BUSCO:
 python3 generate_plot.py -wd ragtag_busco 
 
 
-# Step 5: Identify Transposable Elements
+# Step 6: Identify Transposable Elements
 
 Use RepeatMasker (https://github.com/rmhubley/RepeatMasker) if you use default TE librarys but we created and recommend own genus library (Price et al. 2005)
 
@@ -97,7 +110,7 @@ RepeatModeler -database ragtag.scaffold.fasta -threads 36 -LTRStruct > out.log
 RepeatMasker -e rmblast -x -pa 36 -gff -lib consensi.fa.classified ragtag.scaffold.fasta -dir ./final_directory
 
 
-# Step 6: Annotation and Gene Prediction
+# Step 7: Annotation and Gene Prediction
 
 Use AUGUSTUS (Stanke et al. 2004) to genome annotation:
 
@@ -109,7 +122,7 @@ getAnnoFasta.pl ragtag_polished3.gff
 ##output file = ragtag_polished3.aa and ragtag_polished3.codingseq
 
 
-# Step 7: WGD and Distribution of Substitutions Per Synonymous Site (Ks) Analysis
+# Step 8: WGD and Distribution of Substitutions Per Synonymous Site (Ks) Analysis
 
 Use wgd v2 (Chen et al, 2024) and CDS file which obtained from AUGUSTUS to identify Ks value. If you want to change your steps you can follow the wgd v2 github file.
 
@@ -122,14 +135,14 @@ wgd syn -f transcript -a ID ragtag_polished3.codingseq.tsv ragtag_polished3.gff 
 wgd peak --heuristic ragtag_polished3.codingseq.tsv.ks.tsv -ap ./syn/iadhore-out/anchorpoints.txt -sm ./syn/iadhore-out/segments.txt -le ./syn/iadhore-out/list_elements.txt -mp ./syn/iadhore-out/multiplicon_pairs.txt -n 1 4 -kc 3 -o wgd_peak
 
 
-# Step 8: Analysis of Duplicated Gene Pairs
+# Step 9: Analysis of Duplicated Gene Pairs
 
 Use doubletrouble R package (Almeida-Silva and Van de Peer 2024) and protein sequences which obtained from AUGUSTUS to classify gene duplication modes in one of five categories: segmental (SD), small-scale (SSD), dispersed (DD), proximal (PD), tandem (TD) duplications.
 
 For the R package tool you can follow the steps here: https://www.bioconductor.org/packages/release/bioc/vignettes/doubletrouble/inst/doc/doubletrouble_vignette.html
 
 
-# Step 9: Chloroplast Genome Characterization (optional)
+# Step 10: Chloroplast Genome Characterization (optional)
 
 Use GetOrganelle (Jin et al, 2020) to assembly of raw reads:
 

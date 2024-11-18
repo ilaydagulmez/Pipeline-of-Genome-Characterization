@@ -13,9 +13,21 @@ SOAPnuke filter -n 0.01 -l 35 -q 0.1 -1 1.fastq.gz -C clean_1.fastq.gz -2 2.fast
 
 fastp --in1 clean_1.fastq --out1 FASTP_1.fastq.gz --in2 clean_2.fastq --out2 FASTP_2.fastq.gz --correction
 
-# Step 3: Finding Optimum k-mer and Genome Heterozygosity
+# Step 3: Finding Optimum k-mer, Genome Size and Genome Heterozygosity
 
 Use Kmergenie (Chikhi and Medvedev, 2013) for identify optimum k-mer value. After getting optimum k-mer, use this for Jellyfish (Marcais and Kingsford, 2011) as input.
+
+Use SGA (Simpson and Durbin, 2012) to estimate genome size.
+
+sga preprocess --pe-mode 1 FASTP_1.fastq.gz FASTP_2.fastq.gz > genome.fastq
+
+sga index -a ropebwt -t 8 --no-reverse genome.fastq
+
+sga preqc -t 8 genome.fastq > P.vulgaris.preqc
+
+sga-preqc-report.py P.vulgaris.preqc P.vulgaris.preqc
+
+After that, merge two files:
 
 cat FASTP_1.fastq.gz FASTP_2.fastq.gz > FASTP_1_2.fastq.gz
 

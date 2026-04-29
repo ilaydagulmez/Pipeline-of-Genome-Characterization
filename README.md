@@ -1,4 +1,4 @@
-# Our current pipeline of genome characterization of polyploid plants
+# Our current pipeline of genome characterization of polyploid plants with Illumina 150 x 2 reads
 
 # Step 1: Quality Check
 

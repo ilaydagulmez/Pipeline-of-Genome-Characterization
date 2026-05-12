@@ -162,7 +162,38 @@ Use doubletrouble R package (Almeida-Silva and Van de Peer 2024) and protein seq
 For the R package tool you can follow the steps here: https://www.bioconductor.org/packages/release/bioc/vignettes/doubletrouble/inst/doc/doubletrouble_vignette.html
 
 
-# Step 10: Chloroplast Genome Characterization (optional)
+# Step 10: Collinear Gene Pair and Compare with Whole Genome Ks 
+
+Use MCScanX (Wang et al, 2012) to detect collinear gene pair. Before you start, you should run DIAMOND (or another tools) for create *.blast* file. 
+
+#first step of diamond
+
+diamond makedb \
+  --in uniprot_sprot.fasta  \  *I used to reference protein fasta from database. You can change your input*
+  -d uniprot_sprot
+
+#second step of diamond
+
+diamond blastp \
+-q *.protein.fa \
+  -d uniprot_sprot \
+  -o *.out \
+  -e 1e-5 \
+  -k 1 \
+  --outfmt 6
+
+Now, you have *.blast* file for MCScanX. Create a new folder (e.g run_mcscanx) and put this blast file and your gff file in this folder (run_mcscanx). You can only give this folder to run tool:
+
+./MCScanX run_mcscanx
+
+After you get results, you need the *.collinearity* file for gene level Ks estimation. 
+
+# Step 11: Gene Level Ks Estimation
+
+Use the *ks.slurm* which attached in files folder. This file include a long Phyton script that written by me. 
+
+
+# Step 12: Chloroplast Genome Characterization (optional)
 
 Use GetOrganelle (Jin et al, 2020) to assembly of raw reads:
 

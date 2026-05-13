@@ -168,19 +168,11 @@ Use MCScanX (Wang et al, 2012) to detect collinear gene pair. Before you start, 
 
 #first step of diamond
 
-diamond makedb \
-  --in uniprot_sprot.fasta  \  *I used to reference protein fasta from database. You can change your input*
-  -d uniprot_sprot
-
+diamond makedb --in uniprot_sprot.fasta (I used to reference protein fasta from database. You can change your input) -d uniprot_sprot
+  
 #second step of diamond
 
-diamond blastp \
--q *.protein.fa \
-  -d uniprot_sprot \
-  -o *.out \
-  -e 1e-5 \
-  -k 1 \
-  --outfmt 6
+diamond blastp -q *.protein.fa -d uniprot_sprot -o *.out -e 1e-5 -k 1 --outfmt 6
 
 Now, you have *.blast* file for MCScanX. Create a new folder (e.g run_mcscanx) and put this blast file and your gff file in this folder (run_mcscanx). You can only give this folder to run tool:
 
@@ -188,12 +180,28 @@ Now, you have *.blast* file for MCScanX. Create a new folder (e.g run_mcscanx) a
 
 After you get results, you need the *.collinearity* file for gene level Ks estimation. 
 
+
 # Step 11: Gene Level Ks Estimation
 
-Use the *ks.slurm* which attached in files folder. This file include a long Phyton script that written by me. 
+Use the *ks.slurm* which attached in files folder. This file include a Phyton script that written by me. 
 
 
-# Step 12: Chloroplast Genome Characterization (optional)
+#Step 12: GO Enrichment Analysis
+
+Use CAFE v5 (Mendes et al, 2020) and Use InterProScan (Jones et al, 2014) for this section. First, you need OrthoFinder's (or another tool) results. You should create a new folder (e.g run_orthofinder) and put your peptide file (.fa or .faa) in this folder and then run OrthoFinder (Emms et al, 2019):
+
+python ./orthofinder -f ./run_orthofinder -m MSA
+
+Now, you have orthogroups and tree files. You'll use the "Species_Tree_rooted.txt"  and "Orthogroups.GeneCount.tsv" for the CAFE: 
+
+cafe -i Orthogroups.GeneCount.tsv -t species_tree.nwk -o cafe_out 
+
+Great, you did it! It turns to InterProScan step: 
+
+interproscan.sh -i *protein.fa -appl Pfam -cpu 8 -f TSV -d InterPro (create before run) --iprlookup --goterms
+
+
+# Step 13: Chloroplast Genome Characterization (optional)
 
 Use GetOrganelle (Jin et al, 2020) to assembly of raw reads:
 

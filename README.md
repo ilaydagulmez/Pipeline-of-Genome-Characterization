@@ -186,7 +186,7 @@ After you get results, you need the *.collinearity* file for gene level Ks estim
 Use the *ks.slurm* which attached in files folder. This file include a Phyton script that written by me. 
 
 
-#Step 12: GO Enrichment Analysis
+# Step 12: GO Enrichment Analysis
 
 Use CAFE v5 (Mendes et al, 2020) and Use InterProScan (Jones et al, 2014) for this section. First, you need OrthoFinder's (or another tool) results. You should create a new folder (e.g run_orthofinder) and put your peptide file (.fa or .faa) in this folder and then run OrthoFinder (Emms et al, 2019):
 
